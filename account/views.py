@@ -7,6 +7,7 @@ from django.http import HttpResponse
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
+#회원가입 view
 class Register(APIView):
     permission_classes = (AllowAny,)
     def post(self, request, format=None):
@@ -17,6 +18,7 @@ class Register(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+#로그인view
 class Login(APIView):
     permission_classes = (AllowAny,)
     def post(self, request, format=None):

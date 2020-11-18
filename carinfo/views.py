@@ -9,17 +9,20 @@ from django.http import Http404
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
-# Create your views here.   
+
 class CarInformationView(generics.ListCreateAPIView):
     queryset = CarInformation.objects.all()
     serializer_class = CarInfoSerializer
     permission_classes = [IsAuthenticated]
+    
+    #method가 get일때 모든 차량정보와 사진을 리턴
     def get(self, APIView):
         carinfo = CarInformation.objects.all().values()
         picture = PictureCar.objects.all().values()
         data={"carinformation":carinfo, "pictures":picture}
 
         return Response(data)
+
 class CarInformationDetailView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -36,6 +39,7 @@ class CarInformationDetailView(APIView):
         data={"carinformation":carserializer.data, "pictures":picture}
         
         return Response(data)
+    
     def put(self, request, pk):
         carinfo = self.get_object(pk)
         serializer = CarInfoSerializer(carinfo, data=request.data)
@@ -49,5 +53,4 @@ class CarInformationDetailView(APIView):
     def delete(self, reuqest, pk):
         carinfo = self.get_object(pk)
         carinfo.delete()
-
         return Response(status=status.HTTP_204_NO_CONTENT)
